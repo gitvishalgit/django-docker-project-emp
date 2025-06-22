@@ -1,0 +1,7 @@
+python -m venv myven    
+myven\Scripts\activate
+
+pip install -r requirement.txt
+
+
+python -m pip install mysql-connector-python

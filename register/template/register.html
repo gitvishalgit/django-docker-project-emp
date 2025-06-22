@@ -1,0 +1,60 @@
+{% extends 'index.html' %}
+{% block content %} 
+
+<div class="section">
+    <div class="container">
+        <div class="row full-height justify-content-center">
+            <div class="col-12 text-center align-self-center py-5">
+                <div class="section pb-5 pt-5 pt-sm-2 text-center">
+                    <h6 class="mb-0 pb-3"><span>Log In </span><span>Sign Up</span></h6>
+                      <input class="checkbox" type="checkbox" id="reg-log" name="reg-log" checked/>
+                      <label for="reg-log"></label>
+                    <div class="card-3d-wrap mx-auto">
+                        <div class="card-3d-wrapper">
+                            <div class="card-back">
+                                <div class="center-wrap">
+                                    <div class="section text-center">
+                                        <h4 class="mb-4 pb-3">Sign Up</h4>
+                                        <form action="{% url 'register' %}" method="POST">
+                                            {% csrf_token %}
+                                        <div class="form-group mt-2">
+                                            <input type="text" name="First_Name" class="form-style" placeholder="Your First Name" id="logname" autocomplete="off" pattern="[a-zA-Z]+" title='Enter Alphabets Only ' required>
+                                            <i class="input-icon uil uil-user"></i>
+                                        </div>	
+                                        <div class="form-group mt-2">
+                                            <input type="text" name="Last_Name" class="form-style" placeholder="Your Last Name" id="logname" autocomplete="off" pattern="[a-zA-Z]+" title='Enter Alphabets Only ' required>
+                                            <i class="input-icon uil uil-user"></i>
+                                        </div>	
+                                       
+                                        <div class="form-group mt-2">
+                                            <input type="email" name="emailid" class="form-style" placeholder="Your Email" id="logemail" autocomplete="off" required>
+                                            <i class="input-icon uil uil-at"></i>
+                                        </div>	
+                                        <div class="form-group mt-2">
+                                            <input type="password" name="password" class="form-style" placeholder="Your Password" id="logpass" autocomplete="off" required pattern=".{8,16}" title="Password must be of length 8 to 15" >
+                                            <i class="input-icon uil uil-lock-alt"></i>
+                                        </div>
+                                        <div class="form-group mt-2">
+                                            <select name="gender" id="gender" class="form-style">
+                                                <option value="Male" selected>Male</option>
+                                                <option value="Female">Female</option>
+                                                <option value="Others">Others</option>
+                                            </select>
+                                            <i class="input-icon uil uil-user"></i>
+                                        </div>	
+                                        <p>
+                                            {{ message2 }}
+                                       </p>
+                                        <input type="submit" value="Register" class="btn mt-4">
+                                      </div>
+                                  </div>
+                              </div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+    </div>
+</div>
+
+{% endblock %}
