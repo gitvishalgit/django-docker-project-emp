@@ -1,0 +1,13 @@
+{% extends 'index.html' %}
+{% block content %} 
+<div class="card-3d-wrap mx-auto">
+    <div class="card-3d-wrapper">
+        <div class="card-front">
+            <div class="center-wrap">
+                <h1>{{ message }}</h1>
+                <p class="mb-0 mt-4 text-center"><a href="{% url 'login' %}" class="link">back to login</a></p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

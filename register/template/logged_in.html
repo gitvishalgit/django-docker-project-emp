@@ -1,0 +1,313 @@
+{% extends 'index.html' %}
+{% block title %}
+<h1 id="alarmmsg" class="title"></h1>
+<h2 style="margin-top: 20px;">WELCOME {{ name.upper }}</h2>
+
+    <!-- <center>
+    <div id="divexample">
+        <p class="popup"> 
+            LOGGED IN SUCCESSFULLY!!!
+        </p>
+       
+    
+    </div>
+</center> -->
+{% endblock %}
+
+{% block content %}
+
+
+<a href="{% url 'logout' %}" class="btn btn-primary" style="position: absolute; top: 20px; right:100px">logout</a>
+<div style="color: white; margin-top: 50px;" class="table">
+
+    <h3>{{ message }}</h3>
+
+    {% if data %}
+    <table style="width: 100%;">
+        <tr>
+            <th>Serial No.</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>DOB</th>
+            <th>Gender</th>
+            <th>Department</th>
+            <th>Position</th>
+            <th>Email Id</th>
+            <th colspan="2">Action</th>
+        </tr>
+
+        {% for j in data %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ j.1 }}</td>
+            <td>{{ j.2 }}</td>
+            <td>{{ j.3 }}</td>
+            <td>{{ j.4 }}</td>
+            <td>{{ j.5 }}</td>
+            <td>{{ j.6 }}</td>
+            <td>{{ j.7 }}</td>
+            <td><button onclick="update_fun('{{j.1}},{{j.2}},{{j.3|slugify}},{{j.4}},{{j.5}},{{j.6}},{{j.7}},{{ j.0 }}')" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal3" class="btn btn-primary">Update</button></td>
+            
+            <td><button onclick="delete_fun('{{j.0}}')" data-bs-toggle="modal"
+                    data-bs-target="#exampleModal" class="btn btn-primary">delete</button></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+</div>
+
+<p class="mb-0 mt-4 text-center"><a class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal2">Add
+        Students</a></p>
+
+
+
+<!-- Delete Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="my-bg modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+                <button type="button" style="background-color: white;" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                Are U Sure???
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                <form action="{% url 'delete' token  %}" method="POST">
+                    {% csrf_token %}
+                    <input type="hidden" name="id" id="delete_id_click">
+                    <input type="submit" class="btn btn-primary" value="yes">
+                </form>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+<!--Add Modal -->
+<div class="modal fade" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="my-bg modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">ADD Employee</h5>
+                <button type="button" style="background-color: white;" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="{% url 'add_employee' token  %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group mt-2">
+                        <input type="text" name="First_Name" class="form-style" placeholder="Your First Name"
+                            id="logname" autocomplete="off" pattern="[a-zA-Z]+" title='Enter Alphabets Only ' required>
+                        <i class="input-icon uil uil-user"></i>
+                    </div>
+                    <div class="form-group mt-2">
+                        <input type="text" name="Last_Name" class="form-style" placeholder="Your Last Name" id="logname"
+                            autocomplete="off" pattern="[a-zA-Z]+" title='Enter Alphabets Only ' required>
+                        <i class="input-icon uil uil-user"></i>
+                    </div>
+                    <div class="form-group mt-2">
+                        <input type="date" name="DOB" class="form-style" id="logname" autocomplete="off" required>
+                        <i class="input-icon uil uil-user"></i>
+                    </div>
+                    <div class="form-group mt-2">
+                        <select name="gender" id="gender" class="form-style">
+                            <option value="Male" selected>Male</option>
+                            <option value="Female">Female</option>
+                            <option value="Others">Others</option>
+                        </select>
+                        <i class="input-icon uil uil-user"></i>
+                    </div>
+                    <div class="form-group mt-2">
+                        <select name="department" id="department" class="form-style">
+                            <option value="Python" selected>Python</option>
+                            <option value="Java">Java</option>
+                            <option value="Tester">Tester</option>
+                        </select>
+                        <i class="input-icon uil uil-user"></i>
+                    </div>
+                    <div class="form-group mt-2">
+                        <select name="position" id="position" class="form-style">
+                            <option value="Intern" selected>Intern</option>
+                            <option value="Payroll">Payroll</option>
+                            <option value="Lead">Lead</option>
+                        </select>
+                        <i class="input-icon uil uil-user"></i>
+                    </div>
+                    <div class="form-group mt-2">
+                        <input type="email" name="emailid" class="form-style" placeholder="Your Email" id="logemail"
+                            autocomplete="off" required>
+                        <i class="input-icon uil uil-at"></i>
+                    </div>
+                    <div class="form-group mt-2">
+                        <input type="password" name="password" class="form-style" placeholder="Your Password"
+                            id="logpass" autocomplete="off" required pattern=".{8,16}"
+                            title="Password must be of length 8 to 15">
+                        <i class="input-icon uil uil-lock-alt"></i>
+                    </div>
+
+                    <p>
+                        {{ message2 }}
+                    </p>
+
+
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-secondary" data-bs-dismiss="modal">Add</button>
+
+            </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<!-- Update Modal -->
+<div class="modal fade" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="my-bg modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Update Record</h5>
+                <button type="button" style="background-color: white;" class="btn-close" data-bs-dismiss="modal"
+                    aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                
+                <form action="{% url 'update' token %}" method="POST">
+                    {% csrf_token %}
+                <div class="form-group mt-2">
+                    <input type="text" name="First_Name" class="form-style" placeholder="Your First Name" id="First_Name" autocomplete="off"  pattern="[a-zA-Z]+" title='Enter Alphabets Only ' required>
+                    <i class="input-icon uil uil-user"></i>
+                </div>	
+                <div class="form-group mt-2">
+                    <input type="text" name="Last_Name" class="form-style" placeholder="Your Last Name" id="Last_Name" autocomplete="off" pattern="[a-zA-Z]+" title='Enter Alphabets Only ' required>
+                    <i class="input-icon uil uil-user"></i>
+                </div>	
+                <div class="form-group mt-2">
+                    <input type="date" name="DOB" class="form-style" id="DOB" autocomplete="off" required>
+                    <i class="input-icon uil uil-user"></i>
+                </div>	
+                <div class="form-group mt-2">
+                    <select name="gender2" id="gender2" class="form-style">
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Others">Others</option>
+                    </select>
+                    <i class="input-icon uil uil-user"></i>
+                </div>	
+                <div class="form-group mt-2">
+                    <select name="department2" id="department2" class="form-style">
+                        <option value="Python" selected>Python</option>
+                        <option value="Java">Java</option>
+                        <option value="Tester">Tester</option>
+                    </select>
+                    <i class="input-icon uil uil-user"></i>
+                </div>	
+                <div class="form-group mt-2">
+                    <select name="position2" id="position2" class="form-style">
+                        <option value="Intern" selected>Intern</option>
+                        <option value="Payroll">Payroll</option>
+                        <option value="Lead">Lead</option>
+                    </select>
+                    <i class="input-icon uil uil-user"></i>
+                </div>	
+                <div class="form-group mt-2">
+                    <input type="email" name="emailid" class="form-style" placeholder="Your Email" id="emailid" autocomplete="off" required>
+                    <i class="input-icon uil uil-at"></i>
+                </div>	
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <input type="hidden" id="userid" name="userid">
+                    <input type="submit" class="btn btn-primary" value="update">
+                </form>
+                <p id="showing"></p>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function delete_fun(id) {
+        
+        document.getElementById('delete_id_click').value=id
+    }
+
+    function update_fun(id) {
+        const myArray = id.split(",");
+
+        if (myArray[3]=="Male"){
+            gender=0;
+        }
+        else if(myArray[3]=="Female"){
+            gender=1;
+        }
+        else{
+            gender=2;
+        }
+
+        if (myArray[4]=="Python"){
+            department = 0;
+        }
+        else if (myArray[4]=="Java"){
+            department = 1;
+        }
+        else{
+            department = 2;
+        }
+
+        
+        if (myArray[5]=="Intern"){
+            position = 0;
+        }
+        else if (myArray[5]=="Payroll"){
+            position = 1;
+        }
+        else{
+            position = 2;
+        }
+        document.getElementById('userid').value=myArray[7]
+        document.getElementById('First_Name').value=myArray[0]
+        document.getElementById('Last_Name').value=myArray[1]
+        document.getElementById('DOB').value=myArray[2]
+        document.getElementById('gender2').selectedIndex=gender
+        document.getElementById('department2').selectedIndex=department
+        document.getElementById('position2').selectedIndex=position
+        document.getElementById('emailid').value=myArray[6]
+
+    }
+
+    document.getElementById("alarmmsg").innerHTML = "LOGGED IN SUCCESSFULLY!!!";
+
+    setTimeout(function () {
+        document.getElementById("alarmmsg").innerHTML = '';
+    }, 2000);
+
+
+
+    // function showdiv()
+    // {
+    //     document.getElementById("divexample").style.visibility="visible";
+    // }
+    //     setTimeout("showdiv()", 100);
+    // function hidediv()
+    // {
+    //     document.getElementById("divexample").style.visibility="hidden";
+    // }
+    //     setTimeout("hidediv()", 1000);
+
+
+</script>
+
+{% endblock %}
