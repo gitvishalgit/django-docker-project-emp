@@ -41,14 +41,16 @@ INSTALLED_APPS = [
 ]
  
 
+import os
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql', 
-        'NAME': 'mydb',
-        'USER': 'user',
-        'PASSWORD': 'pass',
-        'HOST': 'db',   # Or an IP Address that your DB is hosted on
-        'PORT': '3306',
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "NAME": os.getenv("DB_NAME", "mysql"),
+        "USER": os.getenv("DB_USER", "mysql"),
+        "PASSWORD": os.getenv("DB_PASSWORD", "root"),
+        "HOST": os.getenv("DB_HOST", "db"),
+        "PORT": os.getenv("DB_PORT", "3306"),
     }
 }
 
@@ -139,5 +141,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com' 
 EMAIL_USE_TLS = True 
 EMAIL_PORT = 587 
-EMAIL_HOST_USER = 'ajitnawade007@gmail.com' 
+EMAIL_HOST_USER = 'kapoorrishabh@gmail.com' 
 EMAIL_HOST_PASSWORD = 'irnbrfqjfesepyoq'
